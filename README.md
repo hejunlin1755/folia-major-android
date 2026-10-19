@@ -1,3 +1,27 @@
+# Folia Android
+
+Folia Android 是面向手机和平板的 Folia 社区安卓移植。**最大的特点是手机独立运行：网易云、酷狗和 QQ 音乐 API 直接内置在 APK 中，无需自行部署服务器、保持电脑开机或填写 API 地址。** 安装后即可在应用内登录和使用在线音乐，并支持原生后台播放、通知栏与锁屏控制、沉浸全屏和系统返回导航。
+
+[**下载 Android APK · android.9**](https://github.com/hejunlin1755/folia-major-android/releases/tag/v0.7.21-android.9) · [安卓构建说明](packaging/android/README.md) · [上游 Folia](https://github.com/chthollyphile/folia-major)
+
+支持 Android 7 及以上、Android System WebView 120 及以上，安装包包含 ARM64 / ARMv7 / x86_64。在线听歌仍需要联网，会员和版权规则由音乐平台决定。
+
+## 安卓实测截图
+
+以下截图来自 Android 15 模拟器中的实际操作。
+
+**系统锁屏播放控制**：显示歌名、歌手和封面，可暂停、恢复、切歌及调整进度。
+
+<img src="img/android-lockscreen-controls.png" alt="Folia 安卓版在系统锁屏中显示歌曲封面与媒体播放控制" width="260" />
+
+**手机横屏搜索**：搜索框与来源切换并排显示，紧凑列表为歌曲结果留出空间。
+
+<img src="img/android-landscape-search.png" alt="Folia 安卓版的手机横屏搜索布局" width="800" />
+
+---
+
+以下保留上游项目介绍、桌面版和 Web 版资料。
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/b5d0e863-48be-497b-b0e9-4bd8d8ce9bf0" alt="Folia" width="100%" />
 </p>
@@ -5,7 +29,7 @@
 <div align="center">
 <a href="https://trendshift.io/repositories/71740?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-71740" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/71740" alt="chthollyphile%2Ffolia-major | Trendshift" width="250" height="55"/></a>
 
-# Folia
+## Folia 上游项目
 
 Lyrics Reimagined // 辞曲新境
 
@@ -31,13 +55,13 @@ Lyrics Reimagined // 辞曲新境
 
 </div>
 
-## 项目简介
+## 上游项目简介
 
 Folia是一个以全屏沉浸式歌词播放为核心的在线音乐播放器，支持网易云、酷狗、QQ 音乐、Navidrome 和本地音乐库，桌面端还支持波点音乐、YouTube Music 和 Spotify，通过智能歌词匹配，AI生成配色主题，以及多种全屏歌词动画为用户提供独特的听歌体验。
 
 提供基于Electron的 windows/ macOS/ Linux 桌面端版本与基于 Node.js 的 Web 版本，支持多平台部署。
 
-如果希望能够在移动设备上使用，或在浏览器上体验，可以选择[一键部署到 Vercel](https://folia-site.cielaniska.top/guide/deploy-vercel) 的 Web 版本，或自行部署到其他支持 Node.js 的平台。
+上游 Web 版可通过 [Vercel](https://folia-site.cielaniska.top/guide/deploy-vercel) 或其他支持 Node.js 的平台部署。本仓库提供的安卓独立版 APK、核心特点与实测截图见本文开头。
 
 ## 快速下载
 
@@ -148,8 +172,6 @@ Vercel 与 Cloudflare 上的 QQ 音乐不再需要额外部署一个常驻 API �
 
 ### Android 独立版
 
-**相比需要外部音乐 API 的网页版部署，最大的特点是手机独立运行：网易云、酷狗和 QQ 音乐服务直接内置在 APK 中，无需自行部署服务器、保持电脑开机或填写 API 地址。** 安装后即可在手机内登录和使用在线音乐；听在线歌曲仍需要网络，会员和版权规则由平台决定。安卓版本另外接入原生后台播放、通知栏与锁屏控制，以及沉浸全屏和系统返回导航。
-
 本仓库维护基于 [chthollyphile/folia-major](https://github.com/chthollyphile/folia-major) 的安卓移植。前往 [Android Releases](https://github.com/hejunlin1755/folia-major-android/releases) 下载 APK，安装后在应用内选择音乐平台扫码登录。网易云、酷狗和 QQ 音乐 API 随安装包运行，手机可独立使用，无需部署后端或填写 API 地址。
 
 - 支持 Android 7 及以上；请使用 120 及以上的 Android System WebView。
@@ -158,12 +180,7 @@ Vercel 与 Cloudflare 上的 QQ 音乐不再需要额外部署一个常驻 API �
 - Android 原生媒体前台服务支持后台播放，以及系统通知栏、锁屏和耳机的播放控制；歌曲信息与应用内同一播放队列同步。本项目是社区移植，桌面专属能力不保证在安卓可用。
 - 覆盖安装需要签名一致；卸载会清除应用数据。版本升级会更新旧页面缓存，同时保留账号和本地数据。
 
-Android 15 模拟器实测：系统锁屏控制与手机横屏搜索。
-
-<p>
-  <img src="img/android-lockscreen-controls.png" alt="Android 锁屏中的 Folia 歌曲信息和播放控制" width="220" />
-  <img src="img/android-landscape-search.png" alt="手机横屏搜索的紧凑布局" width="490" />
-</p>
+实测截图见本文开头的[安卓实测截图](#安卓实测截图)。
 
 本地构建入口为 `npm run android:prepare`，SDK、内置运行时、编译方法与验证范围见 [安卓构建说明](packaging/android/README.md)。iOS 可部署 Web 版后通过 Safari 添加到主屏幕。
 
