@@ -148,6 +148,8 @@ Vercel 与 Cloudflare 上的 QQ 音乐不再需要额外部署一个常驻 API �
 
 ### Android 独立版
 
+**相比需要外部音乐 API 的网页版部署，最大的特点是手机独立运行：网易云、酷狗和 QQ 音乐服务直接内置在 APK 中，无需自行部署服务器、保持电脑开机或填写 API 地址。** 安装后即可在手机内登录和使用在线音乐；听在线歌曲仍需要网络，会员和版权规则由平台决定。安卓版本另外接入原生后台播放、通知栏与锁屏控制，以及沉浸全屏和系统返回导航。
+
 本仓库维护基于 [chthollyphile/folia-major](https://github.com/chthollyphile/folia-major) 的安卓移植。前往 [Android Releases](https://github.com/hejunlin1755/folia-major-android/releases) 下载 APK，安装后在应用内选择音乐平台扫码登录。网易云、酷狗和 QQ 音乐 API 随安装包运行，手机可独立使用，无需部署后端或填写 API 地址。
 
 - 支持 Android 7 及以上；请使用 120 及以上的 Android System WebView。
