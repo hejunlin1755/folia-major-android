@@ -1,4 +1,4 @@
-import { getAndroidMusicApiBase } from '../../androidMusicRuntime';
+import { getAndroidMusicApiBase, waitForAndroidMusicRuntime } from '../../androidMusicRuntime';
 import { NoCopyrightRecommendation, SongPrivilege, SongResult } from "../../../types";
 import { readProviderSessionValue, removeProviderSessionValue, writeProviderSessionValue } from '../providerStorage';
 import { OnlineProviderError } from '../../../types/onlineMusic';
@@ -134,6 +134,7 @@ const waitForNeteasePort = async (bridge: any): Promise<{ port: number | 'offlin
 };
 
 const getApiBase = async () => {
+  await waitForAndroidMusicRuntime();
   // Deliberately uncached under Electron: the local server starts asynchronously and can be
   // restarted from the login modal on a fresh port. Caching the first answer used to pin the
   // renderer to the dead default port for the rest of the session, so every online feature kept

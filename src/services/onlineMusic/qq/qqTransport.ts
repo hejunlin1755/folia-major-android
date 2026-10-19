@@ -1,4 +1,4 @@
-import { getAndroidMusicApiBase } from '../../androidMusicRuntime';
+import { getAndroidMusicApiBase, waitForAndroidMusicRuntime } from '../../androidMusicRuntime';
 import { OnlineProviderError } from '../../../types/onlineMusic';
 import { readProviderSessionValue, removeProviderSessionValue, writeProviderSessionValue } from '../providerStorage';
 import { withLoginRequestLimit } from '../login/loginRequestLimit';
@@ -151,6 +151,7 @@ const describeEmbeddedStatus = async (): Promise<string> => {
 };
 
 const resolveApiBase = async (): Promise<string> => {
+    await waitForAndroidMusicRuntime();
     const readPort = getElectronQqPortReader();
     if (readPort) {
         if (electronApiBase) return electronApiBase;

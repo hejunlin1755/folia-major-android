@@ -1,4 +1,4 @@
-import { getAndroidMusicApiBase } from '../../androidMusicRuntime';
+import { getAndroidMusicApiBase, waitForAndroidMusicRuntime } from '../../androidMusicRuntime';
 import md5 from 'blueimp-md5';
 import { OnlineProviderError } from '../../../types/onlineMusic';
 import { readProviderSessionValue, removeProviderSessionValue, writeProviderSessionValue } from '../providerStorage';
@@ -459,6 +459,7 @@ export const requestKugou = async <T = unknown>(operation: KugouOperation, param
         return response as T;
     }
 
+    await waitForAndroidMusicRuntime();
     const base = getWebApiBase();
     if (!base) {
         throw new OnlineProviderError('unavailable', KUGOU_API_BASE_MISSING, 'kugou');

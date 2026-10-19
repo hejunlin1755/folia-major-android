@@ -5,6 +5,16 @@ export const isAndroidMusicRuntime = (): boolean => getBridge()?.getPlatform?.()
 export const getAndroidMusicApiBase = (provider: string): string | null => isAndroidMusicRuntime() ? `/android-music/${encodeURIComponent(provider)}` : null;
 export const ANDROID_MUSIC_BACKEND_UNAVAILABLE = 'ANDROID_MUSIC_BACKEND_UNAVAILABLE';
 let installed = false;
+let startup: Promise<void> | null = null;
+
+// First-run unpacking is not a platform sign-in request and must finish before its request timer starts.
+export function waitForAndroidMusicRuntime(): Promise<void> {
+    if (!isAndroidMusicRuntime()) return Promise.resolve();
+    if (!startup) startup = getBridge()!.nativePromise!('FoliaMusicBackend', 'ready', {}).then(() => undefined).catch(error => {
+        throw Object.assign(new Error(`${ANDROID_MUSIC_BACKEND_UNAVAILABLE}: ${error instanceof Error ? error.message : 'Startup failed'}`), { code: ANDROID_MUSIC_BACKEND_UNAVAILABLE });
+    });
+    return startup;
+}
 
 export function installAndroidMusicRuntime(): void {
     if (installed || !isAndroidMusicRuntime()) return;
@@ -37,5 +47,5 @@ export function installAndroidMusicRuntime(): void {
             if (onAbort) request.signal.removeEventListener('abort', onAbort);
         }
     };
-    void getBridge()!.nativePromise!('FoliaMusicBackend', 'ready', {}).catch(error => console.warn('[AndroidMusic] Built-in service startup failed', error));
+    void waitForAndroidMusicRuntime().catch(error => console.warn('[AndroidMusic] Built-in service startup failed', error));
 }
