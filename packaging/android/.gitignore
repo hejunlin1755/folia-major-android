@@ -7,3 +7,7 @@ android/capacitor-cordova-android-plugins/
 android/app/src/main/assets/
 android/app/capacitor.build.gradle
 android/capacitor.settings.gradle
+
+.cache/
+backend/node_modules/
+android/**/.cxx/

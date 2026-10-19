@@ -32,6 +32,8 @@
     "dist",
     "release",
     "sync-server",
-    "original"
+    "original",
+    "packaging/android",
+    "test/android"
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "name": "folia-android-music-backend",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": {
+    "@neteasecloudmusicapienhanced/api": "4.41.1",
+    "@yakult-green-tea/qq-music-api": "3.3.3",
+    "kugoumusicapi": "https://github.com/MakcRe/KuGouMusicApi/archive/refs/tags/v1.6.0.tar.gz"
+  }
+}

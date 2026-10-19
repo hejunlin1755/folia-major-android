@@ -32,7 +32,7 @@ jobs:
           java-version: '21'
       - uses: android-actions/setup-android@v3
         with:
-          packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
+          packages: 'platform-tools platforms;android-36 build-tools;36.0.0 ndk;28.2.13676358 cmake;3.22.1'
           log-accepted-android-sdk-licenses: false
       - uses: pnpm/action-setup@v4
         with:
@@ -42,6 +42,10 @@ jobs:
         env:
           ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
       - run: pnpm --dir packaging/android install --frozen-lockfile --ignore-scripts
+      - run: npm ci --prefix packaging/android/backend --ignore-scripts --no-audit --no-fund
+      - run: node --test test/android/backend.test.cjs
+      - run: npx vitest run -c vitest.config.ts test/unit/onlineMusic/androidMusicRuntime.test.ts
+      - run: npm run typecheck
       - run: npm run android:check
       - run: npm run android:prepare
         env:
@@ -51,6 +55,24 @@ jobs:
           VITE_LYRIC_PROXY_ORIGIN: ${{ inputs.lyric_proxy_origin }}
       - run: bash gradlew --no-daemon assembleDebug
         working-directory: packaging/android/android
+      - name: Allow emulator acceleration
+        run: if [ -e /dev/kvm ]; then sudo chmod a+rw /dev/kvm; fi
+      - name: Verify packaged music runtime on Android
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          ram-size: 3072M
+          working-directory: packaging/android/android
+          script: bash gradlew --no-daemon --console=plain :app:connectedDebugAndroidTest
+      - name: Upload Android test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Folia-Android-test-reports
+          path: packaging/android/android/app/build/reports/androidTests/connected/
+          if-no-files-found: ignore
       - uses: actions/upload-artifact@v4
         with:
           name: Folia-Android-debug

@@ -446,3 +446,12 @@ html[data-click-through='active'] body .click-through-interactive * {
     animation: none;
     opacity: 0.9;
 }
+
+/* Android owns system insets natively; suppress the WebView edge effect without changing scroll gestures. */
+html[data-android="true"], html[data-android="true"] body {
+  background-color: #09090b;
+  overscroll-behavior: none;
+}
+html[data-android="true"] * {
+  overscroll-behavior: none;
+}

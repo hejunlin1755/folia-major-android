@@ -1,3 +1,4 @@
+import { ANDROID_MUSIC_BACKEND_UNAVAILABLE } from '../../androidMusicRuntime';
 import type { LoginFailureDetail, LoginStep } from '../../../types/onlineMusic';
 import { isKugouApiUnloaded, kugouTransportFailure } from './kugouFailure';
 
@@ -6,6 +7,7 @@ import { isKugouApiUnloaded, kugouTransportFailure } from './kugouFailure';
 
 // 登录的某一步抛了错（都出自 kugouTransport.ts 的 requestKugou）。
 export const describeKugouLoginFailure = (_step: LoginStep, error: unknown): LoginFailureDetail | null => {
+    if (error instanceof Error && error.message.includes(ANDROID_MUSIC_BACKEND_UNAVAILABLE)) return { case: 'local-service-unavailable' };
     // Web 端的请求是裸 fetch：连不上时它抛 TypeError。
     if (error instanceof TypeError) return { case: 'unreachable' };
     // 主进程没能加载 KuGouMusicApi：登录窗口重启不了它，只能重来。

@@ -95,3 +95,6 @@ __pycache__/
 
 # Built by build/buildPythonRuntime.mjs - binary artifacts that live on the mirrors, not in git.
 dist-runtime/
+
+# Runtime-only provider state; never commit account/device state.
+.auth-state/

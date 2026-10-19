@@ -1,4 +1,5 @@
 import { Buffer } from 'buffer';
+import { installAndroidMusicRuntime } from './services/androidMusicRuntime';
 import { installGlobalVisualizerFrameRateLimiter } from './utils/frameRateLimiter';
 import { installConsoleLogCapture } from './utils/consoleLogBuffer';
 import { installDebugModule } from './services/debug/debugModule';
@@ -22,4 +23,5 @@ installMemorySampleFeed();
 // if (import.meta.env.DEV) installCoverSizeAudit();
 installGlobalVisualizerFrameRateLimiter();
 
+installAndroidMusicRuntime();
 void import('./bootstrap');

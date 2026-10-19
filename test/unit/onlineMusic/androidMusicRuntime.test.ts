@@ -1,0 +1,29 @@
+import { afterEach, describe, expect, it, vi } from 'vitest';
+
+// A real Android API request carries method, body and session header through the native bridge; Web requests stay unchanged.
+afterEach(() => { vi.unstubAllGlobals(); vi.resetModules(); });
+describe('Android music request bridge', () => {
+    it('uses the built-in backend for a provider POST without requiring an external API URL', async () => {
+        const nativePromise = vi.fn(async (_plugin: string, method: string) => method === 'ready' ? { ready: true } : { status: 200, headers: { 'Content-Type': 'application/json' }, body: '{"code":200}' });
+        const browserFetch = vi.fn();
+        vi.stubGlobal('Capacitor', { getPlatform: () => 'android', nativePromise });
+        vi.stubGlobal('location', { href: 'https://localhost/', origin: 'https://localhost' });
+        vi.stubGlobal('document', { documentElement: { dataset: {} } });
+        vi.stubGlobal('fetch', browserFetch);
+        const runtime = await import('../../../src/services/androidMusicRuntime');
+        runtime.installAndroidMusicRuntime();
+        expect(runtime.getAndroidMusicApiBase('qq')).toBe('/android-music/qq');
+        const result = await fetch('/android-music/qq/login/qr/check?key=test', { method: 'POST', headers: { 'X-QQ-Session': 'opaque', 'Content-Type': 'application/json' }, body: '{"test":true}' });
+        expect(await result.json()).toEqual({ code: 200 });
+        expect(nativePromise).toHaveBeenCalledWith('FoliaMusicBackend', 'request', expect.objectContaining({ path: '/qq/login/qr/check?key=test', method: 'POST', body: '{"test":true}', headers: expect.objectContaining({ 'x-qq-session': 'opaque' }) }));
+        expect(browserFetch).not.toHaveBeenCalled();
+    });
+    it('does not intercept a normal browser build', async () => {
+        const browserFetch = vi.fn();
+        vi.stubGlobal('fetch', browserFetch);
+        const runtime = await import('../../../src/services/androidMusicRuntime');
+        runtime.installAndroidMusicRuntime();
+        expect(runtime.getAndroidMusicApiBase('qq')).toBeNull();
+        expect(globalThis.fetch).toBe(browserFetch);
+    });
+});

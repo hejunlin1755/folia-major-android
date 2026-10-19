@@ -23,3 +23,4 @@ if (!existsSync(path.join(directory, 'android'))) {
     run(capacitor, ['add', 'android'], directory);
 }
 run(capacitor, ['sync', 'android'], directory);
+run(path.join(directory, 'prepareBackend.mjs'), [], root);

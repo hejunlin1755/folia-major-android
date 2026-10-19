@@ -3,12 +3,19 @@ apply plugin: 'com.android.application'
 android {
     namespace = "top.izuna.folia.android"
     compileSdk = rootProject.ext.compileSdkVersion
+    ndkVersion '28.2.13676358'
+    externalNativeBuild {
+        cmake { path 'src/main/cpp/CMakeLists.txt'; version '3.22.1' }
+    }
+    packaging { jniLibs { useLegacyPackaging = true } }
     defaultConfig {
         applicationId "top.izuna.folia.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 721
-        versionName "0.7.21"
+        ndk { abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64' }
+        externalNativeBuild { cmake { arguments '-DANDROID_STL=c++_shared' } }
+        versionCode 722
+        versionName "0.7.21-android.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

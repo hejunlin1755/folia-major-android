@@ -1,3 +1,4 @@
+import { ANDROID_MUSIC_BACKEND_UNAVAILABLE } from '../../androidMusicRuntime';
 import type { LoginFailureDetail, LoginStep } from '../../../types/onlineMusic';
 import { NETEASE_API_OFFLINE, NeteaseLoginHttpError, isNeteaseApiUnavailable, isNeteaseNetworkFailure } from './netease';
 
@@ -6,6 +7,7 @@ import { NETEASE_API_OFFLINE, NeteaseLoginHttpError, isNeteaseApiUnavailable, is
 
 // 登录的某一步抛了错。
 export const describeNeteaseLoginFailure = (_step: LoginStep, error: unknown): LoginFailureDetail | null => {
+    if (error instanceof Error && error.message.includes(ANDROID_MUSIC_BACKEND_UNAVAILABLE)) return { case: 'local-service-unavailable' };
     // 桌面端的本地后端没有在监听（netease.ts 的 getApiBase）。
     if (isNeteaseApiUnavailable(error)) return { case: 'local-service-stopped' };
     // 它没起来是因为断网：说连不上，不给重启的按钮。网通了，下一次开始会让它再启动。
