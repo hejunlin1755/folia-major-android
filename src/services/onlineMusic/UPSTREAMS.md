@@ -28,6 +28,7 @@
 
 - **上游**：第三方库 KuGouMusicApi（MakcRe/KuGouMusicApi），包名 `kugoumusicapi`。另有一处直接调酷狗旧的公开手机接口 `https://m.kugou.com/app/i/getSongInfo.php`，在 `/song/url` 拒绝一个 hash 时用来取播放地址（`kugou/kugouTransport.ts` 的 `requestKugouLegacyPlayInfo`）。
 - **版本**：v1.6.0。不是从 npm 装的，是 GitHub 上这个标签的源码包：根目录 `package.json` 和 `deploy/docker/kugou-api/package.json` 都写 `https://github.com/MakcRe/KuGouMusicApi/archive/refs/tags/v1.6.0.tar.gz`。
+- **Android 独立版**：`packaging/android/backend/package.json` 与锁文件固定源码提交 `514f870db7e60ca37bc5535be5da36d32b571c6f`（包版本 1.6.2）。`backend/kugou.cjs` 补齐程序调用缺少的稳定设备身份，旧取流接口未返回地址时依次执行 `user_verify`、`song_auth`、`song_url_auth`；此依赖与授权流程与已在平板确认可播放的 `android.7` 一致。桌面与 Docker 仍保留上述版本。安卓媒体代理保留 Range 响应，并通过应用 HTTPS 源转发 HTTP 音乐 CDN。
 - **桌面端怎么用**：主进程直接 require 这个包、调用它的函数，不起本地服务（`electron/kugou/kugouApiBridge.cjs`，加载前设 `process.env.platform = 'lite'`）。设备 cookie 和登录态由桥接层存，用系统加密。网页版发到 `VITE_KUGOU_API_BASE`。
 - **我们改了什么**：桌面端没有改包；Docker 镜像跑同一个 `patch-music-api-client-ip.mjs`，改包的 `server.js`。
 - **上游变了怎么跟**：

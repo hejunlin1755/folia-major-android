@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useAndroidBackNavigation } from './useAndroidBackNavigation';
 import type { LocalLibraryGroup } from '../types';
 import {
     type SearchReturnView,
@@ -636,6 +637,8 @@ export function useAppNavigation() {
     const backCollection = useCallback(() => {
         popCollectionLayer();
     }, [popCollectionLayer]);
+
+    useAndroidBackNavigation({ closeSearchView, backCollection, navigateBackFromPlayer, navigateBackFromLattice, navigateToHome });
 
     return {
         currentView,

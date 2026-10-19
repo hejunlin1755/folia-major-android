@@ -237,7 +237,7 @@ const BravaisStage: React.FC<LibrarySuiteStageProps> = ({
         const slot = bravaisSlotFromKey(slotKey, current?.shape);
         current?.layer.onFocusEntry?.(slot ? resolveSlotItem(current, slot)?.key ?? null : null);
     }, []);
-    const focus = useBravaisFocus({ frameRef, tweenTo: camera.tweenTo, getBottomInset, onFocusEntry, getShape });
+    const focus = useBravaisFocus({ frameRef, view, tweenTo: camera.tweenTo, getBottomInset, onFocusEntry, getShape });
 
     const { display, displayRef, isSettling } = useBravaisDisplay(layer, {
         frameRef,

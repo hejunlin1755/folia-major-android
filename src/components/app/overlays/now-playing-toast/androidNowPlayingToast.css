@@ -1,0 +1,15 @@
+/* Keep the small song label away from the bottom playback controls on a phone. */
+html[data-android='true'] .now-playing-toast {
+    top: calc(12px + var(--folia-native-safe-top, 0px));
+    bottom: auto !important;
+    left: calc(12px + var(--folia-native-safe-left, 0px));
+    max-width: calc(100% - 24px);
+}
+html[data-android='true'] .now-playing-toast > button {
+    min-width: 200px;
+    max-width: min(280px, calc(100vw - 24px));
+    gap: 8px;
+    padding: 6px 10px 6px 6px;
+}
+html[data-android='true'] .now-playing-toast [data-toast-cover] { width: 36px; height: 36px; }
+html[data-android='true'] [data-ponder='player-bar'] { max-width: 400px; }

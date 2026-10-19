@@ -51,7 +51,7 @@ const SearchResultRow: React.FC<SearchResultRowProps> = ({
     ));
 
     return (
-        <div style={style} className="px-2 py-1.5">
+        <div style={style} className="search-result-row px-2 py-1.5">
             <div
                 className={`group flex h-full items-center gap-3 rounded-2xl border px-3 transition-colors ${
                     isDaylight
@@ -63,7 +63,7 @@ const SearchResultRow: React.FC<SearchResultRowProps> = ({
                     type="button"
                     disabled={isUnavailable}
                     onClick={() => onPlayTrack(track)}
-                    className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-zinc-500/15 disabled:cursor-not-allowed"
+                    className="search-result-cover relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-zinc-500/15 disabled:cursor-not-allowed"
                     aria-label={t('search.playTrack')}
                 >
                     {coverUrl ? (
@@ -143,7 +143,7 @@ const SearchResultRow: React.FC<SearchResultRowProps> = ({
                     <button
                         type="button"
                         onClick={() => onAddTrackToQueue(track)}
-                        className="shrink-0 rounded-full p-2 opacity-60 transition-all hover:bg-black/10 hover:opacity-100 dark:hover:bg-white/10 sm:opacity-0 sm:group-hover:opacity-100"
+                        className="shrink-0 rounded-full p-2 opacity-60 transition-all hover:bg-black/10 hover:opacity-100 dark:hover:bg-white/10 search-result-enqueue sm:opacity-0 sm:group-hover:opacity-100"
                         title={t('navidrome.addToQueue')}
                     >
                         <Plus size={16} />

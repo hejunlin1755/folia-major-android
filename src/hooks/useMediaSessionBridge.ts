@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import { isAndroidMusicRuntime } from '../services/androidMusicRuntime';
+import { useAndroidMediaSession } from './useAndroidMediaSession';
 import type { RefObject } from 'react';
 import { PlayerState } from '../types';
 import type { SongResult } from '../types';
@@ -50,8 +52,11 @@ export const useMediaSessionBridge = ({
     mediaSessionNextRef,
     isNowPlayingControlDisabledRef,
 }: UseMediaSessionBridgeOptions) => {
+    useAndroidMediaSession({ audioRef, getDisplayAudioElement, audioSrc, currentSong, cachedCoverUrl,
+        isNowPlayingStageActive, unknownArtistLabel, mediaSessionPlayRef, mediaSessionPauseRef,
+        mediaSessionPrevRef, mediaSessionNextRef, isNowPlayingControlDisabledRef });
     useEffect(() => {
-        if (!('mediaSession' in navigator)) {
+        if (isAndroidMusicRuntime() || !('mediaSession' in navigator)) {
             return;
         }
 
@@ -107,7 +112,7 @@ export const useMediaSessionBridge = ({
     }, [audioRef, isNowPlayingControlDisabledRef, mediaSessionNextRef, mediaSessionPauseRef, mediaSessionPlayRef, mediaSessionPrevRef]);
 
     useEffect(() => {
-        if (!('mediaSession' in navigator)) {
+        if (isAndroidMusicRuntime() || !('mediaSession' in navigator)) {
             return;
         }
 
@@ -192,7 +197,7 @@ export const useMediaSessionBridge = ({
     }, [audioRef, audioSrc, cachedCoverUrl, currentSong, getDisplayAudioElement, unknownArtistLabel]);
 
     useEffect(() => {
-        if (!('mediaSession' in navigator)) {
+        if (isAndroidMusicRuntime() || !('mediaSession' in navigator)) {
             return;
         }
 

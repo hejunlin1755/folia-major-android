@@ -18,4 +18,8 @@ export const resolveBravaisReducedTransitions = (state: MotionState): boolean =>
     resolveReducedMotion(state, 'lattice') || resolveReducedMotion(state, 'collectionMorph')
 );
 
-export const useBravaisReducedTransitions = (): boolean => useMotionSettingsStore(resolveBravaisReducedTransitions);
+export const useBravaisReducedTransitions = (): boolean => {
+    const reduced = useMotionSettingsStore(resolveBravaisReducedTransitions);
+    // Mobile WebView uses the existing fade path to avoid costly whole-wall 3D flips.
+    return reduced || (typeof document !== 'undefined' && document.documentElement.dataset.android === 'true');
+};

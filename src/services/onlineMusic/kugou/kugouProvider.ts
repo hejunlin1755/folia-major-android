@@ -1,4 +1,5 @@
 import type { SongResult, UnifiedSong } from '../../../types';
+import { getAndroidMusicMediaUrl } from '../../androidMusicRuntime';
 import {
     OnlineProviderError,
     type AudioQualityPreference,
@@ -1116,7 +1117,7 @@ export const kugouProvider: OnlineMusicProvider = {
                             });
                             return {
                                 // Preserve the upstream candidate here; the shared playback transport normalizes its scheme.
-                                url,
+                                url: getAndroidMusicMediaUrl(url, 'kugou.com'),
                                 fetchedAt: Date.now(),
                                 quality: candidateQuality,
                                 ...(replayGain ? { replayGain } : {}),
@@ -1171,7 +1172,7 @@ export const kugouProvider: OnlineMusicProvider = {
                             requestedQuality: quality,
                         });
                         return {
-                            url: legacyUrl,
+                            url: getAndroidMusicMediaUrl(legacyUrl, 'kugou.com'),
                             fetchedAt: Date.now(),
                             quality: 'standard',
                         };

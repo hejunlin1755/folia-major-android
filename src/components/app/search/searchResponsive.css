@@ -1,0 +1,16 @@
+/* Touch search keeps its controls visible and gives short landscape screens room for results. */
+@media (pointer: coarse) {
+    .search-workspace .search-result-enqueue { opacity: 1; min-width: 44px; min-height: 44px; }
+}
+@media (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
+    .search-workspace { padding: 8px 12px; }
+    .search-workspace > header { flex-direction: row; align-items: center; gap: 12px; }
+    .search-workspace > header > div { flex: 1; min-width: 0; gap: 8px; }
+    .search-workspace > header form input { padding-top: 12px; padding-bottom: 12px; }
+    .search-workspace > header nav { flex: none; padding-bottom: 0; }
+    .search-workspace > header nav button { min-height: 44px; padding: 8px 12px; }
+    .search-workspace > header + div { margin-top: 8px; }
+    .search-workspace .search-result-row { padding: 4px; }
+    .search-workspace .search-result-cover { width: 40px; height: 40px; }
+    .search-workspace .shrink-0.justify-center { padding-top: 4px; padding-bottom: 0; }
+}

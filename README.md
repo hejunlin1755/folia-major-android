@@ -42,6 +42,7 @@ Folia是一个以全屏沉浸式歌词播放为核心的在线音乐播放器，
 ## 快速下载
 
 > [!TIP]
+> - **Android 安卓独立版**：[下载 APK](https://github.com/hejunlin1755/folia-major-android/releases/tag/v0.7.21-android.9)，支持手机内置音乐服务、后台播放、系统媒体控制与沉浸全屏。
 > - **GitHub**：[Latest Release](https://github.com/chthollyphile/folia-major/releases/latest)，提供 Windows / macOS / Linux 全平台安装包。
 > - **网盘**：[夸克网盘](https://pan.quark.cn/s/6e4c6fa3bc6f) · [百度云](https://pan.baidu.com/s/1f0x3g-8PMcNCO-TJ5z1rPw?pwd=flia)（提取码 `flia`），适合国内网络，仅提供 Windows 与 Apple silicon 的正式版安装包。
 >
@@ -145,22 +146,31 @@ Vercel 与 Cloudflare 上的 QQ 音乐不再需要额外部署一个常驻 API �
 
 自托管用户可以使用 [Docker Compose 全栈部署](deploy/docker/README.md)。本地音乐目录访问依赖可信 HTTPS 安全上下文，部署文档包含 NAS 反向代理和证书要求。
 
-关于移动端：
+### Android 独立版
 
-本仓库的安卓构建入口：`npm run android:prepare`，本地编译和 GitHub Actions 生成测试 APK 的步骤见 [安卓构建说明](packaging/android/README.md)。
+本仓库维护基于 [chthollyphile/folia-major](https://github.com/chthollyphile/folia-major) 的安卓移植。前往 [Android Releases](https://github.com/hejunlin1755/folia-major-android/releases) 下载 APK，安装后在应用内选择音乐平台扫码登录。网易云、酷狗和 QQ 音乐 API 随安装包运行，手机可独立使用，无需部署后端或填写 API 地址。
 
-目前推荐移动端用户部署 Web 版本/自托管版本之后，通过chrome for android / iOS Safari 创建 PWA应用（也就是将网页应用添加到桌面，Folia web版本支持安装为PWA应用）来使用。
+- 支持 Android 7 及以上；请使用 120 及以上的 Android System WebView。
+- 安装包包含 ARM64、ARMv7 和 x86_64。在线歌曲的可用性仍取决于平台授权、会员、版权及网络。
+- 原生界面采用沉浸全屏，默认隐藏状态栏和底部手势白条；边缘滑动可临时呼出系统栏，系统返回键按应用内层级返回。手机横竖屏的搜索和歌曲卡片按可用空间布局。
+- Android 原生媒体前台服务支持后台播放，以及系统通知栏、锁屏和耳机的播放控制；歌曲信息与应用内同一播放队列同步。本项目是社区移植，桌面专属能力不保证在安卓可用。
+- 覆盖安装需要签名一致；卸载会清除应用数据。版本升级会更新旧页面缓存，同时保留账号和本地数据。
 
-有一定技术的用户可以使用 capacitor 将本项目的web版本打包成为可安装的安卓apk，具体方法可参考示范仓库：[chthollyphile/folia-sonnet](https://github.com/chthollyphile/folia-sonnet)
+Android 15 模拟器实测：系统锁屏控制与手机横屏搜索。
 
-也可以直接使用社区移植的安卓版：[maimai993/folia-sonnet](https://github.com/maimai993/folia-sonnet)。该版本由社区自发维护，功能会与官方 PC 版存在差异，使用中遇到问题请反馈到该社区仓库。
+<p>
+  <img src="img/android-lockscreen-controls.png" alt="Android 锁屏中的 Folia 歌曲信息和播放控制" width="220" />
+  <img src="img/android-landscape-search.png" alt="手机横屏搜索的紧凑布局" width="490" />
+</p>
+
+本地构建入口为 `npm run android:prepare`，SDK、内置运行时、编译方法与验证范围见 [安卓构建说明](packaging/android/README.md)。iOS 可部署 Web 版后通过 Safari 添加到主屏幕。
 
 ### 直接下载
 
 - **Windows / macOS / Linux**: 最新版本的安装包请前往 [Releases 页面](https://github.com/chthollyphile/folia-major/releases/latest) 下载。
 - **Arch Linux**: 可通过 AUR 获取 [folia-major-bin](https://aur.archlinux.org/packages/folia-major-bin)。
 - **Flatpak**: 社区提供的第三方 flatpak，详情见 [Flatpark](https://flatpark.org/apps/top.izuna.foliamajor/)。
-- **Android**: 社区移植的安卓版见 [maimai993/folia-sonnet](https://github.com/maimai993/folia-sonnet)。该版本由社区自发维护，功能会与官方 PC 版存在差异，使用中遇到问题请反馈到该社区仓库。
+- **Android**: 下载本仓库的 [APK 安装包](https://github.com/hejunlin1755/folia-major-android/releases)，使用方法见上方“Android 独立版”。
 
 > [!IMPORTANT]
 > 如果国内网络从 GitHub Releases 下载较慢，可以使用 [夸克网盘](https://pan.quark.cn/s/6e4c6fa3bc6f) 或 [百度云](https://pan.baidu.com/s/1f0x3g-8PMcNCO-TJ5z1rPw?pwd=flia) 下载。网盘链接仅提供 Windows 与 Apple silicon 的正式版安装包.

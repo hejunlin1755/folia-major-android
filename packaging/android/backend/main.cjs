@@ -30,19 +30,28 @@ function allowedProxyTarget(value) {
 }
 
 async function proxy(req, res, url) {
+    const media = url.pathname === '/api/music-media';
     let target = allowedProxyTarget(url.searchParams.get('url'));
+    if (media && !target.hostname.endsWith('.kugou.com')) throw new Error('Media target is not allowed');
     const headers = {};
     for (const [key, value] of Object.entries(req.headers)) {
         if (!['host', 'origin', 'referer', 'cookie', 'authorization', 'x-folia-local-auth', 'connection'].includes(key)) headers[key] = value;
     }
+    headers['accept-encoding'] = 'identity';
     for (let redirects = 0; redirects < 5; redirects++) {
-        const response = await fetch(target, { headers, redirect: 'manual', signal: AbortSignal.timeout(25000) });
+        const response = await fetch(target, { headers, redirect: 'manual', signal: AbortSignal.timeout(media ? 180000 : 25000) });
         if ([301, 302, 303, 307, 308].includes(response.status)) {
             target = allowedProxyTarget(new URL(response.headers.get('location'), target).href);
+            if (media && !target.hostname.endsWith('.kugou.com')) throw new Error('Media redirect is not allowed');
             await response.body?.cancel();
             continue;
         }
-        res.writeHead(response.status, { 'Content-Type': response.headers.get('content-type') || 'application/octet-stream' });
+        const responseHeaders = { 'Content-Type': response.headers.get('content-type') || 'application/octet-stream', 'Cache-Control': 'no-store' };
+        for (const name of ['content-range', 'accept-ranges', 'etag', 'last-modified']) {
+            if (response.headers.has(name)) responseHeaders[name] = response.headers.get(name);
+        }
+        if (!response.headers.has('content-encoding') && response.headers.has('content-length')) responseHeaders['content-length'] = response.headers.get('content-length');
+        res.writeHead(response.status, responseHeaders);
         if (response.body) await pipeline(Readable.fromWeb(response.body), res);
         else res.end();
         return;
@@ -83,7 +92,7 @@ function createProviders(stateDir) {
     if (previousEnv === undefined) delete process.env.NODE_ENV;
     else process.env.NODE_ENV = previousEnv;
     const { api: netease, prepare: prepareNetease } = require('./netease.cjs').createNetease(stateDir);
-    const kugou = require('kugoumusicapi');
+    const kugou = require('./kugou.cjs').createKugou(stateDir);
     return { qqApp, netease, kugou, prepareNetease };
 }
 
@@ -94,7 +103,7 @@ async function createGateway({ stateDir, token, providers = createProviders(stat
         try {
             const url = new URL(req.url, 'http://127.0.0.1');
             if (url.pathname === '/health') return json(res, 200, { ready: true, node: process.version, providers: ['netease', 'qq', 'kugou'] });
-            if (url.pathname === '/api/lyric-proxy') return await proxy(req, res, url);
+            if (['/api/lyric-proxy', '/api/music-media'].includes(url.pathname)) return await proxy(req, res, url);
             if (url.pathname.startsWith('/qq/')) {
                 req.url = req.url.slice(3);
                 providers.qqApp(req, res);

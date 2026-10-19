@@ -14,6 +14,8 @@ import { useCollectionNavigationStore } from '../../../stores/useCollectionNavig
 import { useOnlineProviderAccountStore } from '../../../stores/useOnlineProviderAccountStore';
 import { omni } from '../../../services/onlineMusic/omni';
 
+import './searchResponsive.css';
+
 // src/components/app/search/SearchWorkspace.tsx
 
 type SearchWorkspaceProps = {
@@ -104,7 +106,7 @@ const SearchWorkspace: React.FC<SearchWorkspaceProps> = ({
                     initial={{ opacity: 0, y: 28 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 28 }}
-                    className={`fixed inset-0 flex flex-col overflow-hidden px-3 py-4 sm:px-6 sm:py-6 ${
+                    className={`search-workspace fixed inset-0 flex flex-col overflow-hidden px-3 py-4 sm:px-6 sm:py-6 ${
                         hasCollection ? 'z-[5]' : 'z-50'
                     }`}
                     style={{

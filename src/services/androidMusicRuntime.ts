@@ -4,6 +4,17 @@ const getBridge = (): NativeBridge | undefined => (globalThis as typeof globalTh
 export const isAndroidMusicRuntime = (): boolean => getBridge()?.getPlatform?.() === 'android' && typeof getBridge()?.nativePromise === 'function';
 export const getAndroidMusicApiBase = (provider: string): string | null => isAndroidMusicRuntime() ? `/android-music/${encodeURIComponent(provider)}` : null;
 export const ANDROID_MUSIC_BACKEND_UNAVAILABLE = 'ANDROID_MUSIC_BACKEND_UNAVAILABLE';
+// Keep HTTP-only music CDNs behind the app's HTTPS origin without allowing mixed content.
+export function getAndroidMusicMediaUrl(value: string, domain: string): string {
+    if (!isAndroidMusicRuntime()) return value;
+    try {
+        const url = new URL(value);
+        if (['http:', 'https:'].includes(url.protocol) && url.hostname.endsWith('.' + domain)) {
+            return `${location.origin}/api/music-media?url=${encodeURIComponent(url.href)}`;
+        }
+    } catch { /* Leave invalid candidates to the normal playback validator. */ }
+    return value;
+}
 let installed = false;
 let startup: Promise<void> | null = null;
 

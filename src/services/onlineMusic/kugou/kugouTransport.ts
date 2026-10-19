@@ -1,4 +1,4 @@
-import { getAndroidMusicApiBase, waitForAndroidMusicRuntime } from '../../androidMusicRuntime';
+import { getAndroidMusicApiBase, isAndroidMusicRuntime, waitForAndroidMusicRuntime } from '../../androidMusicRuntime';
 import md5 from 'blueimp-md5';
 import { OnlineProviderError } from '../../../types/onlineMusic';
 import { readProviderSessionValue, removeProviderSessionValue, writeProviderSessionValue } from '../providerStorage';
@@ -239,7 +239,7 @@ export const hasKugouAuthenticatedSearchSession = (): boolean => {
         return Boolean(readProviderSessionValue('kugou', 'userid'));
     }
     const cookie = getWebSessionCookie();
-    return ['token', 'userid', 'dfid'].every(key => (
+    return (isAndroidMusicRuntime() ? ['token', 'userid'] : ['token', 'userid', 'dfid']).every(key => (
         new RegExp(`(?:^|;)\\s*${key}=[^;]+`, 'i').test(cookie)
     ));
 };

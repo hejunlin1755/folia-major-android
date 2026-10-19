@@ -3,6 +3,17 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 // A real Android API request carries method, body and session header through the native bridge; Web requests stay unchanged.
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.resetModules(); });
 describe('Android music request bridge', () => {
+    it('wraps only supported Android music CDNs while preserving Web URLs', async () => {
+        const runtime = await import('../../../src/services/androidMusicRuntime');
+        const source = 'http://fs.test.kugou.com/song.mp3?key=opaque';
+        expect(runtime.getAndroidMusicMediaUrl(source, 'kugou.com')).toBe(source);
+        vi.stubGlobal('Capacitor', { getPlatform: () => 'android', nativePromise: vi.fn() });
+        vi.stubGlobal('location', { origin: 'https://localhost' });
+        expect(runtime.getAndroidMusicMediaUrl(source, 'kugou.com')).toBe(`https://localhost/api/music-media?url=${encodeURIComponent(source)}`);
+        for (const url of ['https://kugou.com.evil.example/a.mp3', 'http://127.0.0.1/a', 'blob:local']) {
+            expect(runtime.getAndroidMusicMediaUrl(url, 'kugou.com')).toBe(url);
+        }
+    });
     it('uses the built-in backend for a provider POST without requiring an external API URL', async () => {
         const nativePromise = vi.fn(async (_plugin: string, method: string) => method === 'ready' ? { ready: true } : { status: 200, headers: { 'Content-Type': 'application/json' }, body: '{"code":200}' });
         const browserFetch = vi.fn();

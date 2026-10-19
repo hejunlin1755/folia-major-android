@@ -1,6 +1,6 @@
-import { useCallback, useMemo, useRef, useState, type MutableRefObject } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react';
 import { resolveRevealCenter, type RevealRect } from '../../../components/wall/revealRect';
-import type { WallViewCenter } from '../../../components/wall/wallView';
+import type { WallView, WallViewCenter } from '../../../components/wall/wallView';
 import type { WallSlot } from '../../../components/wall/wallSlots';
 import { BRAVAIS_METRICS, BRAVAIS_REVEAL_PAD_PX } from './bravaisConstants';
 import { resolveFocusReflow } from './bravaisDisplay';
@@ -17,12 +17,14 @@ import type { BravaisFrameState } from './useBravaisFrame';
 
 export const useBravaisFocus = ({
     frameRef,
+    view,
     tweenTo,
     getBottomInset,
     onFocusEntry,
     getShape,
 }: {
     frameRef: MutableRefObject<BravaisFrameState>;
+    view: WallView | null;
     tweenTo: (center: WallViewCenter) => void;
     /** 此刻播放条安全区的高度（屏幕 px）；没有播放条时是普通边距。 */
     getBottomInset: () => number;
@@ -40,7 +42,21 @@ export const useBravaisFocus = ({
 
     // 形状只在换层 / 换形状时变，那时聚焦卡已经收起：按展开那一刻的形状算。
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const reflow = useMemo(() => resolveFocusReflow(expandedSlotKey, getShape()), [expandedSlotKey]);
+    const fitReflow = useCallback((slotKey: string | null) => {
+        const result = new Map(resolveFocusReflow(slotKey, getShape()));
+        const rect = slotKey ? result.get(slotKey) : undefined;
+        // A desktop-sized six-cell card must fit beside the seam on a phone in either orientation.
+        if (rect && view && document.documentElement.dataset.android === 'true') {
+            const seam = Math.max(frameRef.current.openWidth, frameRef.current.targetOpenWidth);
+            result.set(slotKey!, {
+                ...rect,
+                width: Math.min(rect.width, Math.max(160, view.width - seam - 32) / view.scale),
+                height: Math.min(rect.height, Math.max(160, view.height - getBottomInset() - 32) / view.scale),
+            });
+        }
+        return result;
+    }, [frameRef, getBottomInset, getShape, view]);
+    const reflow = useMemo(() => fitReflow(expandedSlotKey), [expandedSlotKey, fitReflow]);
     const reflowRef = useRef(reflow);
     reflowRef.current = reflow;
 
@@ -99,9 +115,14 @@ export const useBravaisFocus = ({
     const expand = useCallback((slot: WallSlot, options: { centered?: boolean } = {}) => {
         expandedRef.current = slot.key;
         setExpandedSlotKey(slot.key);
-        const rect = resolveFocusReflow(slot.key, getShape()).get(slot.key);
+        const rect = fitReflow(slot.key).get(slot.key);
         if (rect) reveal(rect, options);
-    }, [getShape, reveal]);
+    }, [fitReflow, reveal]);
+
+    useEffect(() => {
+        const rect = expandedSlotKey ? reflow.get(expandedSlotKey) : undefined;
+        if (rect) reveal(rect);
+    }, [view, expandedSlotKey, reflow, reveal]);
 
     const collapse = useCallback(() => {
         if (expandedRef.current === null) return;

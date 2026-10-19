@@ -558,3 +558,17 @@
     background: var(--bravais-window-glow);
 }
 
+
+/* Native touch targets stay usable after the wall's world-space scaling. */
+html[data-android='true'] .bravais-focus-actions button {
+    min-width: 86px;
+    min-height: 86px;
+    padding: 12px 18px;
+    font-size: 24px;
+}
+html[data-android='true'] .bravais-focus-actions button svg { width: 34px; height: 34px; }
+html[data-android='true'] .bravais-focus-actions { margin-top: 16px; }
+@media (orientation: landscape) and (max-height: 500px) {
+    html[data-android='true'] .bravais-focus-links { font-size: 19px; }
+    html[data-android='true'] .bravais-root .lattice-poster.is-expanded .lattice-poster-copy.bravais-focus-copy { bottom: 18px; left: 24px; right: 24px; }
+}

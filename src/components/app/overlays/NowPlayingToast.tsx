@@ -7,6 +7,8 @@ import { useTransitionBorderCue } from './now-playing-toast/useTransitionBorderC
 import { usePlayerBottomBarBottomPx } from '../../../hooks/usePlayerBottomBarBottomPx';
 import { usePlayerOverlayObstacle } from '../../../hooks/usePlayerOverlayLayout';
 
+import './now-playing-toast/androidNowPlayingToast.css';
+
 // src/components/app/overlays/NowPlayingToast.tsx
 // 播放器与 Lattice 左下角的 now playing 卡片（playing-toast 样式：圆角 2xl、44px 封面、底部滑入）。
 // 歌名上方带 "正在播放 / 接下来播放" 标签。
@@ -145,7 +147,7 @@ const NowPlayingToast: React.FC<NowPlayingToastProps> = ({
                     // 底边跟右下角面板开关按钮和中间的进度条胶囊落在同一条基线上，
                     // 由共享 MotionValue 直接驱动 bottom（默认 32，即原来的 bottom-8）。
                     style={{ bottom: bottomBarBottomPx }}
-                    className="pointer-events-none fixed left-6 z-40"
+                    className="now-playing-toast pointer-events-none fixed left-6 z-40"
                 >
                     {/* 描边排在卡片前面：卡片自己是 relative，绘制顺序上压在描边上头，所以
                         描边内侧那一半被卡片背景盖住，露在外面的是外侧 + 辉光。
