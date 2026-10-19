@@ -1,0 +1,55 @@
+name: Android debug APK
+on:
+  workflow_dispatch:
+    inputs:
+      netease_api:
+        description: 'Public HTTPS NetEase API URL (optional)'
+        type: string
+      kugou_api:
+        description: 'Public HTTPS KuGou API URL (optional)'
+        type: string
+      qq_api:
+        description: 'Public HTTPS QQ API URL (optional)'
+        type: string
+      lyric_proxy_origin:
+        description: 'HTTPS Folia Web origin for lyric proxy (optional)'
+        type: string
+permissions:
+  contents: read
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '10.15.1'
+          run_install: false
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+      - run: pnpm --dir packaging/android install --frozen-lockfile --ignore-scripts
+      - run: npm run android:check
+      - run: npm run android:prepare
+        env:
+          VITE_NETEASE_API_BASE: ${{ inputs.netease_api }}
+          VITE_KUGOU_API_BASE: ${{ inputs.kugou_api }}
+          VITE_QQ_API_BASE: ${{ inputs.qq_api }}
+          VITE_LYRIC_PROXY_ORIGIN: ${{ inputs.lyric_proxy_origin }}
+      - run: bash gradlew --no-daemon assembleDebug
+        working-directory: packaging/android/android
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Folia-Android-debug
+          path: packaging/android/android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
