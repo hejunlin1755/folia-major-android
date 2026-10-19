@@ -1,0 +1,23 @@
+{
+  "appId": "top.izuna.folia.android",
+  "appName": "Folia",
+  "webDir": "../../dist",
+  "backgroundColor": "#09090b",
+  "loggingBehavior": "debug",
+  "server": {
+    "hostname": "localhost",
+    "androidScheme": "https",
+    "cleartext": false
+  },
+  "android": {
+    "allowMixedContent": false,
+    "webContentsDebuggingEnabled": false,
+    "minWebViewVersion": 120
+  },
+  "plugins": {
+    "SystemBars": {
+      "insetsHandling": "disable",
+      "style": "DARK"
+    }
+  }
+}

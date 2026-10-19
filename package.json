@@ -60,7 +60,9 @@
     "contributors:add": "npx all-contributors-cli add",
     "contributors:generate": "npx all-contributors-cli generate",
     "models:fetch": "node build/fetchModels.mjs",
-    "manual:ai-probe": "node test/manual/ai_probe.mjs"
+    "manual:ai-probe": "node test/manual/ai_probe.mjs",
+    "android:prepare": "node packaging/android/prepare.mjs",
+    "android:check": "node --test test/android/buildConfig.test.mjs"
   },
   "build": {
     "appId": "top.izuna.foliamajor",

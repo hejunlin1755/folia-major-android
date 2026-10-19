@@ -1,6 +1,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { type ConfigEnv, type UserConfig, type ViteDevServer } from 'vite';
+import { loadEnv, type ConfigEnv, type UserConfig, type ViteDevServer } from 'vite';
+import { validateAndroidEnvironment } from './packaging/android/buildConfig.mjs';
 import react from '@vitejs/plugin-react';
 import { commandPinyinPlugin } from './dev/pinyin/commandPinyinPlugin.mjs';
 import { traditionalLocalePlugin } from './dev/i18n/traditionalLocalePlugin.mjs';
@@ -132,6 +133,9 @@ function devLyricProxyPlugin() {
 }
 
 export default async function viteConfig(_config: ConfigEnv): Promise<UserConfig> {
+  if (_config.mode === 'android') {
+    validateAndroidEnvironment({ ...loadEnv('android', __dirname, 'VITE_'), ...process.env });
+  }
   let commitHash = '';
   if (process.env.VERCEL_GIT_COMMIT_SHA) {
     commitHash = process.env.VERCEL_GIT_COMMIT_SHA.substring(0, 7);
