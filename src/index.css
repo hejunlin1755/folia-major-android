@@ -455,3 +455,29 @@ html[data-android="true"], html[data-android="true"] body {
 html[data-android="true"] * {
   overscroll-behavior: none;
 }
+
+/* Let the scene bleed to every edge; reserve insets only for controls, never for the root canvas. */
+html[data-android='true'] .android-player-controls {
+    margin-bottom: max(0px, calc(var(--folia-native-safe-bottom, 0px) - 16px));
+    width: calc(100vw - 32px - var(--folia-native-safe-left, 0px) - var(--folia-native-safe-right, 0px));
+}
+html[data-android='true'] .android-player-back,
+html[data-android='true'] .lattice-back {
+    top: calc(12px + var(--folia-native-safe-top, 0px));
+    left: calc(16px + var(--folia-native-safe-left, 0px));
+}
+html[data-android='true'] .bravais-seam-content {
+    top: var(--folia-native-safe-top, 0px);
+    bottom: var(--folia-native-safe-bottom, 0px);
+}
+html[data-android='true'] .search-workspace {
+    padding-top: calc(12px + var(--folia-native-safe-top, 0px));
+    padding-bottom: calc(12px + var(--folia-native-safe-bottom, 0px));
+    padding-left: calc(12px + var(--folia-native-safe-left, 0px));
+    padding-right: calc(12px + var(--folia-native-safe-right, 0px));
+}
+
+html[data-android='true'] .android-ponder-button {
+    top: calc(20px + var(--folia-native-safe-top, 0px));
+    right: calc(20px + var(--folia-native-safe-right, 0px));
+}

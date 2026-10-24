@@ -12,6 +12,8 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
+import android.media.AudioAttributes;
+import android.util.Log;
 import android.media.MediaMetadata;
 import android.media.session.MediaSession;
 import android.media.session.PlaybackState;
@@ -26,7 +28,7 @@ import org.json.JSONObject;
 public class FoliaPlaybackService extends Service {
     private static final int NOTIFICATION = 731;
     private static final String CHANNEL = "folia-playback";
-    private static boolean running;
+    private static volatile boolean running;
     private MediaSession session;
     private PowerManager.WakeLock wakeLock;
     private boolean playing;
@@ -50,6 +52,9 @@ public class FoliaPlaybackService extends Service {
         wakeLock = ((PowerManager) getSystemService(POWER_SERVICE)).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Folia:Playback");
         wakeLock.setReferenceCounted(false);
         session = new MediaSession(this, "Folia");
+        session.setFlags(MediaSession.FLAG_HANDLES_MEDIA_BUTTONS | MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS);
+        session.setPlaybackToLocal(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA)
+            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build());
         session.setSessionActivity(openApp());
         session.setCallback(new MediaSession.Callback() {
             @Override public void onPlay() { command("play", 0); }
@@ -81,7 +86,7 @@ public class FoliaPlaybackService extends Service {
         return builder.setSmallIcon(R.drawable.ic_stat_playback)
             .setContentTitle(title).setContentText(artist).setSubText(album).setLargeIcon(cover)
             .setContentIntent(openApp()).setVisibility(Notification.VISIBILITY_PUBLIC)
-            .setOnlyAlertOnce(true).setShowWhen(false).setOngoing(playing)
+            .setOnlyAlertOnce(true).setShowWhen(false).setOngoing(playing).setCategory(Notification.CATEGORY_TRANSPORT)
             .addAction(action("previoustrack", android.R.drawable.ic_media_previous, 1))
             .addAction(action(playing ? "pause" : "play", playing ? android.R.drawable.ic_media_pause : android.R.drawable.ic_media_play, 2))
             .addAction(action("nexttrack", android.R.drawable.ic_media_next, 3))
@@ -123,7 +128,7 @@ public class FoliaPlaybackService extends Service {
                 if (foreground) { stopForeground(false); foreground = false; }
                 getSystemService(NotificationManager.class).notify(NOTIFICATION, notification());
             }
-        } catch (Exception error) { stopSelf(); }
+        } catch (Exception error) { Log.e("FoliaPlayback", "Could not publish media session", error); stopSelf(); }
         return START_NOT_STICKY;
     }
     @Override public void onTaskRemoved(Intent rootIntent) { command("pause", 0); stopSelf(); }

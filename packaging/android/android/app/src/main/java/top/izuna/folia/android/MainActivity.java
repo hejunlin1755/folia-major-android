@@ -39,9 +39,14 @@ public class MainActivity extends BridgeActivity {
             Insets safe = insets.getInsets(WindowInsetsCompat.Type.ime());
             if (view.getPaddingLeft() != safe.left || view.getPaddingTop() != safe.top || view.getPaddingRight() != safe.right || view.getPaddingBottom() != safe.bottom) view.setPadding(safe.left, safe.top, safe.right, safe.bottom);
             if (bridge != null) {
+                // The picture uses the whole window; only interactive overlays consume these safe distances.
                 Insets cutout = insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.displayCutout());
+                Insets bars = insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars());
+                Insets gestures = insets.getInsets(WindowInsetsCompat.Type.mandatorySystemGestures());
+                int top = Math.max(cutout.top, bars.top);
+                int bottom = Math.max(cutout.bottom, Math.max(bars.bottom, gestures.bottom));
                 float density = getResources().getDisplayMetrics().density;
-                bridge.getWebView().evaluateJavascript("document.documentElement.style.setProperty('--folia-native-safe-top','" + cutout.top / density + "px');document.documentElement.style.setProperty('--folia-native-safe-left','" + cutout.left / density + "px');document.documentElement.style.setProperty('--folia-native-safe-right','" + cutout.right / density + "px');void 0;", null);
+                bridge.getWebView().evaluateJavascript("document.documentElement.style.setProperty('--folia-native-safe-top','" + top / density + "px');document.documentElement.style.setProperty('--folia-native-safe-left','" + Math.max(cutout.left, bars.left) / density + "px');document.documentElement.style.setProperty('--folia-native-safe-right','" + Math.max(cutout.right, bars.right) / density + "px');document.documentElement.style.setProperty('--folia-native-safe-bottom','" + (safe.bottom > 0 ? 0 : bottom / density) + "px');void 0;", null);
             }
             return WindowInsetsCompat.CONSUMED;
         });

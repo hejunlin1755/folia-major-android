@@ -2,7 +2,7 @@
 
 Folia Android 是面向手机和平板的 Folia 社区安卓移植。**最大的特点是手机独立运行：网易云、酷狗和 QQ 音乐 API 直接内置在 APK 中，无需自行部署服务器、保持电脑开机或填写 API 地址。** 安装后即可在应用内登录和使用在线音乐，并支持原生后台播放、通知栏与锁屏控制、沉浸全屏和系统返回导航。
 
-[**下载 Android APK · android.9**](https://github.com/hejunlin1755/folia-major-android/releases/tag/v0.7.21-android.9) · [安卓构建说明](packaging/android/README.md) · [上游 Folia](https://github.com/chthollyphile/folia-major)
+[**下载 Android APK · android.10**](https://github.com/hejunlin1755/folia-major-android/releases/tag/v0.7.21-android.10) · [安卓构建说明](packaging/android/README.md) · [上游 Folia](https://github.com/chthollyphile/folia-major)
 
 支持 Android 7 及以上、Android System WebView 120 及以上，安装包包含 ARM64 / ARMv7 / x86_64。在线听歌仍需要联网，会员和版权规则由音乐平台决定。
 
@@ -66,7 +66,7 @@ Folia是一个以全屏沉浸式歌词播放为核心的在线音乐播放器，
 ## 快速下载
 
 > [!TIP]
-> - **Android 安卓独立版**：[下载 APK](https://github.com/hejunlin1755/folia-major-android/releases/tag/v0.7.21-android.9)，支持手机内置音乐服务、后台播放、系统媒体控制与沉浸全屏。
+> - **Android 安卓独立版**：[下载 APK](https://github.com/hejunlin1755/folia-major-android/releases/tag/v0.7.21-android.10)，支持手机内置音乐服务、后台播放、系统媒体控制与沉浸全屏。
 > - **GitHub**：[Latest Release](https://github.com/chthollyphile/folia-major/releases/latest)，提供 Windows / macOS / Linux 全平台安装包。
 > - **网盘**：[夸克网盘](https://pan.quark.cn/s/6e4c6fa3bc6f) · [百度云](https://pan.baidu.com/s/1f0x3g-8PMcNCO-TJ5z1rPw?pwd=flia)（提取码 `flia`），适合国内网络，仅提供 Windows 与 Apple silicon 的正式版安装包。
 >

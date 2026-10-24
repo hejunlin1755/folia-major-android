@@ -96,8 +96,12 @@ const PagePonderTouchButton: React.FC<PagePonderTouchButtonProps> = ({ theme, is
                 return;
             }
 
-            const inHotspot = event.clientY <= HOTSPOT_SIZE_PX
-                && event.clientX >= window.innerWidth - HOTSPOT_SIZE_PX;
+            const rootStyle = getComputedStyle(document.documentElement);
+            const safeTop = parseFloat(rootStyle.getPropertyValue('--folia-native-safe-top')) || 0;
+            const safeRight = parseFloat(rootStyle.getPropertyValue('--folia-native-safe-right')) || 0;
+            const inHotspot = event.clientY >= safeTop && event.clientY <= safeTop + HOTSPOT_SIZE_PX
+                && event.clientX >= window.innerWidth - safeRight - HOTSPOT_SIZE_PX
+                && event.clientX <= window.innerWidth - safeRight;
             if (!inHotspot) {
                 // 手指落在别处，上一面没用掉的旗就作废 —— 免得它留到下一次真正的点击上。
                 suppressNextClickRef.current = false;
@@ -132,7 +136,7 @@ const PagePonderTouchButton: React.FC<PagePonderTouchButtonProps> = ({ theme, is
             aria-label={t('ponder.openPage')}
             // 收起来之后不可点：留着可点的话，右上角会变成一块看不见却能按的地方。
             // 出来时淡入、从略小长到位；关了微动效就只淡入淡出。
-            className={`fixed right-5 top-5 z-[190] h-12 w-12 rounded-full transition-[opacity,transform] active:scale-95 ${
+            className={`android-ponder-button fixed right-5 top-5 z-[190] h-12 w-12 rounded-full transition-[opacity,transform] active:scale-95 ${
                 isRevealed ? 'pd-t-enter opacity-100' : `pd-t-base pointer-events-none opacity-0 ${calm ? '' : 'scale-[0.94]'}`
             }`}
             style={{ ...ponderLayerTokens(isDaylight, theme), ...ponderMotionTokens(calm) }}

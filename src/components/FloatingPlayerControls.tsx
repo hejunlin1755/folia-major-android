@@ -331,7 +331,7 @@ const FloatingPlayerControls: React.FC<FloatingPlayerControlsProps> = ({
                 所以挂在这一层不会干扰居中。
             */}
             <motion.div
-                className={`absolute left-1/2 -translate-x-1/2 z-60 w-full flex justify-center pointer-events-none
+                className={`android-player-controls absolute left-1/2 -translate-x-1/2 z-60 w-full flex justify-center pointer-events-none
                     ${currentView === 'home'
                         ? 'max-w-[calc(100vw-120px)] md:max-w-[min(calc(32rem_+_var(--folium-player-bar-extra,0px)),calc(100vw-120px))]'
                         : 'max-w-[min(calc(32rem_+_var(--folium-player-bar-extra,0px)),100vw)] px-4'}`}
