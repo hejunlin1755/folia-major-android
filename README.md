@@ -2,7 +2,7 @@
 
 Folia Android 是面向手机和平板的 Folia 社区安卓移植。**最大的特点是手机独立运行：网易云、酷狗和 QQ 音乐 API 直接内置在 APK 中，无需自行部署服务器、保持电脑开机或填写 API 地址。** 安装后即可在应用内登录和使用在线音乐，并支持原生后台播放、通知栏与锁屏控制、沉浸全屏和系统返回导航。
 
-[**下载 Android APK · android.10**](https://github.com/hejunlin1755/folia-major-android/releases/tag/v0.7.21-android.10) · [安卓构建说明](packaging/android/README.md) · [上游 Folia](https://github.com/chthollyphile/folia-major)
+[**下载 Android APK · android.10**](https://github.com/hejunlin1755/folia-major-pc-for-android/releases/tag/v0.7.21-android.10) · [安卓构建说明](packaging/android/README.md) · [上游 Folia](https://github.com/chthollyphile/folia-major)
 
 支持 Android 7 及以上、Android System WebView 120 及以上，安装包包含 ARM64 / ARMv7 / x86_64。在线听歌仍需要联网，会员和版权规则由音乐平台决定。
 
@@ -66,7 +66,7 @@ Folia是一个以全屏沉浸式歌词播放为核心的在线音乐播放器，
 ## 快速下载
 
 > [!TIP]
-> - **Android 安卓独立版**：[下载 APK](https://github.com/hejunlin1755/folia-major-android/releases/tag/v0.7.21-android.10)，支持手机内置音乐服务、后台播放、系统媒体控制与沉浸全屏。
+> - **Android 安卓独立版**：[下载 APK](https://github.com/hejunlin1755/folia-major-pc-for-android/releases/tag/v0.7.21-android.10)，支持手机内置音乐服务、后台播放、系统媒体控制与沉浸全屏。
 > - **GitHub**：[Latest Release](https://github.com/chthollyphile/folia-major/releases/latest)，提供 Windows / macOS / Linux 全平台安装包。
 > - **网盘**：[夸克网盘](https://pan.quark.cn/s/6e4c6fa3bc6f) · [百度云](https://pan.baidu.com/s/1f0x3g-8PMcNCO-TJ5z1rPw?pwd=flia)（提取码 `flia`），适合国内网络，仅提供 Windows 与 Apple silicon 的正式版安装包。
 >
@@ -172,7 +172,7 @@ Vercel 与 Cloudflare 上的 QQ 音乐不再需要额外部署一个常驻 API �
 
 ### Android 独立版
 
-本仓库维护基于 [chthollyphile/folia-major](https://github.com/chthollyphile/folia-major) 的安卓移植。前往 [Android Releases](https://github.com/hejunlin1755/folia-major-android/releases) 下载 APK，安装后在应用内选择音乐平台扫码登录。网易云、酷狗和 QQ 音乐 API 随安装包运行，手机可独立使用，无需部署后端或填写 API 地址。
+本仓库维护基于 [chthollyphile/folia-major](https://github.com/chthollyphile/folia-major) 的安卓移植。前往 [Android Releases](https://github.com/hejunlin1755/folia-major-pc-for-android/releases) 下载 APK，安装后在应用内选择音乐平台扫码登录。网易云、酷狗和 QQ 音乐 API 随安装包运行，手机可独立使用，无需部署后端或填写 API 地址。
 
 - 支持 Android 7 及以上；请使用 120 及以上的 Android System WebView。
 - 安装包包含 ARM64、ARMv7 和 x86_64。在线歌曲的可用性仍取决于平台授权、会员、版权及网络。
@@ -189,7 +189,7 @@ Vercel 与 Cloudflare 上的 QQ 音乐不再需要额外部署一个常驻 API �
 - **Windows / macOS / Linux**: 最新版本的安装包请前往 [Releases 页面](https://github.com/chthollyphile/folia-major/releases/latest) 下载。
 - **Arch Linux**: 可通过 AUR 获取 [folia-major-bin](https://aur.archlinux.org/packages/folia-major-bin)。
 - **Flatpak**: 社区提供的第三方 flatpak，详情见 [Flatpark](https://flatpark.org/apps/top.izuna.foliamajor/)。
-- **Android**: 下载本仓库的 [APK 安装包](https://github.com/hejunlin1755/folia-major-android/releases)，使用方法见上方“Android 独立版”。
+- **Android**: 下载本仓库的 [APK 安装包](https://github.com/hejunlin1755/folia-major-pc-for-android/releases)，使用方法见上方“Android 独立版”。
 
 > [!IMPORTANT]
 > 如果国内网络从 GitHub Releases 下载较慢，可以使用 [夸克网盘](https://pan.quark.cn/s/6e4c6fa3bc6f) 或 [百度云](https://pan.baidu.com/s/1f0x3g-8PMcNCO-TJ5z1rPw?pwd=flia) 下载。网盘链接仅提供 Windows 与 Apple silicon 的正式版安装包.

@@ -52,7 +52,7 @@ bash gradlew assembleDebug
 
 内置运行时：fogtape/nodejs-mobile `v24.22.0-0`，Android 全量包 SHA-256 `9b068f4ad4c755f26c04b31883c536f037a4831e6575847a699cdf5fa72dde25`。移动运行时基于 Node 24，由维护 fork 发布，构建时校验固定摘要，支持 16 KB 内存页。源码与许可见 https://github.com/fogtape/nodejs-mobile/tree/v24.22.0-0 。音乐 API 依赖版本在 `backend/package-lock.json` 中锁定。
 
-最终修复包构建记录：https://github.com/hejunlin1755/folia-major-android/actions/runs/39199764501 （构建源码 01b1330150348e63b14d8c3d48c05271f13c2e8a）。158 项登录、传输和架构回归测试通过。首次解压服务不计入平台登录请求的时限。
+最终修复包构建记录：https://github.com/hejunlin1755/folia-major-pc-for-android/actions/runs/39199764501 （构建源码 01b1330150348e63b14d8c3d48c05271f13c2e8a）。158 项登录、传输和架构回归测试通过。首次解压服务不计入平台登录请求的时限。
 
 本次 Release 使用本地 debug 构建签名，签名密钥保存在构建环境的 ANDROID_USER_HOME 中。CI 生成的包可能使用不同签名。若提示签名冲突，请先备份本地资料；卸载会清除该应用的数据。
 
